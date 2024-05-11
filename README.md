@@ -38,50 +38,50 @@ seaco-paraformer 转onnx后没有时间戳输出主要由于在定义onnx-graph�
 
 这样导出onnx后的就可以支持时间戳啦，当然推理代码也要调整：funasr_onnx/paraformer_bin.py 中的 ContextualParaformer.__call()__ 
 ```python
-try:
-                outputs = self.bb_infer(feats, feats_len, bias_embed)
-                am_scores, valid_token_lens = outputs[0], outputs[1]
-
-                if len(outputs) == 4:
-                    # for BiCifParaformer Inference
-                    us_alphas, us_peaks = outputs[2], outputs[3]
-                else:
-                    us_alphas, us_peaks = None, None
-
-            except ONNXRuntimeError:
-                # logging.warning(traceback.format_exc())
-                logging.warning("input wav is silence or noise")
-                preds = [""]
-            else:
-                preds = self.decode(am_scores, valid_token_lens)
-                if us_peaks is None:
-                    for pred in preds:
-                        if self.language == "en-bpe":
-                            pred = sentence_postprocess_sentencepiece(pred)
-                        else:
-                            pred = sentence_postprocess(pred)
-                        asr_res.append({"preds": pred})
-                else:
-                    for pred, us_peaks_ in zip(preds, us_peaks):
-                        raw_tokens = pred
-                        timestamp, timestamp_raw = time_stamp_lfr6_onnx(
-                            us_peaks_, copy.copy(raw_tokens)
-                        )
-                        text_proc, timestamp_proc, _ = sentence_postprocess(
-                            raw_tokens, timestamp_raw
-                        )
-                        # logging.warning(timestamp)
-                        if len(self.plot_timestamp_to):
-                            self.plot_wave_timestamp(
-                                waveform_list[0], timestamp, self.plot_timestamp_to
-                            )
-                        asr_res.append(
-                            {
-                                "preds": text_proc,
-                                "timestamp": timestamp_proc,
-                                "raw_tokens": raw_tokens,
-                            }
-                        )
+  try:
+      outputs = self.bb_infer(feats, feats_len, bias_embed)
+      am_scores, valid_token_lens = outputs[0], outputs[1]
+  
+      if len(outputs) == 4:
+          # for BiCifParaformer Inference
+          us_alphas, us_peaks = outputs[2], outputs[3]
+      else:
+          us_alphas, us_peaks = None, None
+  
+  except ONNXRuntimeError:
+      # logging.warning(traceback.format_exc())
+      logging.warning("input wav is silence or noise")
+      preds = [""]
+  else:
+      preds = self.decode(am_scores, valid_token_lens)
+      if us_peaks is None:
+          for pred in preds:
+              if self.language == "en-bpe":
+                  pred = sentence_postprocess_sentencepiece(pred)
+              else:
+                  pred = sentence_postprocess(pred)
+              asr_res.append({"preds": pred})
+      else:
+          for pred, us_peaks_ in zip(preds, us_peaks):
+              raw_tokens = pred
+              timestamp, timestamp_raw = time_stamp_lfr6_onnx(
+                  us_peaks_, copy.copy(raw_tokens)
+              )
+              text_proc, timestamp_proc, _ = sentence_postprocess(
+                  raw_tokens, timestamp_raw
+              )
+              # logging.warning(timestamp)
+              if len(self.plot_timestamp_to):
+                  self.plot_wave_timestamp(
+                      waveform_list[0], timestamp, self.plot_timestamp_to
+                  )
+              asr_res.append(
+                  {
+                      "preds": text_proc,
+                      "timestamp": timestamp_proc,
+                      "raw_tokens": raw_tokens,
+                  }
+              )
 ```
 
 ### 2.测试
