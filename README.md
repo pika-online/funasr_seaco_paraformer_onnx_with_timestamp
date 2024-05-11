@@ -1,0 +1,2 @@
+# funasr_seaco_paraformer_onnx_with_timestamp
+修复funasr中seaco-paraformer导出onnx后没有时间戳的bug
