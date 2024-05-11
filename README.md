@@ -8,7 +8,7 @@ seaco-paraformer 转onnx后没有时间戳输出主要由于在定义onnx-graph�
   def export_backbone_output_names()
   def export_backbone_dynamic_axes()
 ```
-对此我们参照支持时间戳功能的onnx-graph的代码：funasr/models/seaco_paraformer/export_meta.py 进行修复
+对此我们参照支持时间戳功能的onnx-graph的代码：funasr/models/bicif_paraformer/export_meta.py 进行修复
 ```python
   # 修复1
   def export_backbone_forward()：
