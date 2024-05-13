@@ -323,12 +323,12 @@ class ContextualParaformer(Paraformer):
         else:
             self.pred_bias = 0
 
-    # def __call__(
-    #     self, wav_content: Union[str, np.ndarray, List[str]], hotwords: str, **kwargs
-    # ) -> List:
     def __call__(
-        self, waveform_list:list, hotwords: str, **kwargs
+        self, wav_content: Union[str, np.ndarray, List[str]], hotwords: str, **kwargs
     ) -> List:
+    # def __call__(
+    #     self, waveform_list:list, hotwords: str, **kwargs
+    # ) -> List:
         # make hotword list
         hotwords, hotwords_length = self.proc_hotword(hotwords)
         # import pdb; pdb.set_trace()
@@ -337,7 +337,7 @@ class ContextualParaformer(Paraformer):
         bias_embed = bias_embed.transpose(1, 0, 2)
         _ind = np.arange(0, len(hotwords)).tolist()
         bias_embed = bias_embed[_ind, hotwords_length.tolist()]
-        # waveform_list = self.load_data(wav_content, self.frontend.opts.frame_opts.samp_freq)
+        waveform_list = self.load_data(wav_content, self.frontend.opts.frame_opts.samp_freq)
         waveform_nums = len(waveform_list)
         asr_res = []
         for beg_idx in range(0, waveform_nums, self.batch_size):
