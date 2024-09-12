@@ -1,5 +1,7 @@
 # funasr_seaco_paraformer_onnx_with_timestamp
 修复funasr中seaco-paraformer导出onnx后没有时间戳的bug，本仓库中funasr，funasr_onnx已经做好上述修复，直接替换使用。
+onnx模型已上传modelscope: https://modelscope.cn/models/QuadraV/funasr_seaco_paraformer_onnx_with_timestamp
+关于断句性能评测，请参考个人asr网站：www.funsound.cn，www.funsound.cn/whisper
 
 ### 1.问题定位
 seaco-paraformer 转onnx后没有时间戳输出主要由于在定义onnx-graph时：funasr/models/seaco_paraformer/export_meta.py 没有加入时间戳预测功能
