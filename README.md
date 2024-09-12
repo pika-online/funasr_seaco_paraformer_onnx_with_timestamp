@@ -3,7 +3,7 @@
 
 onnx模型已上传modelscope: https://modelscope.cn/models/QuadraV/funasr_seaco_paraformer_onnx_with_timestamp
 
-关于断句性能评测，请参考个人asr网站：www.funsound.cn，www.funsound.cn/whisper
+关于断句性能评测，请参考个人asr网站：www.funsound.cn
 
 ### 1.问题定位
 seaco-paraformer 转onnx后没有时间戳输出主要由于在定义onnx-graph时：funasr/models/seaco_paraformer/export_meta.py 没有加入时间戳预测功能
